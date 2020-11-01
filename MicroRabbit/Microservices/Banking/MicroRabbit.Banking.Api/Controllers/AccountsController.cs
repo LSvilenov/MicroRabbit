@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using MicroRabbit.Banking.Application.Interfaces;
+using MicroRabbit.Banking.Application.Models;
 using MicroRabbit.Banking.Domain.Models;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,20 @@ namespace MicroRabbit.Banking.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAllAsync()
         {
             var result = await _accountService.GetAccountsAsync();
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] AccountTransfer accountTransfer)
+        {
+            // TODO: Use view models
+
+            await _accountService.TransferAsync(accountTransfer);
+            return Ok();
         }
     }
 }
